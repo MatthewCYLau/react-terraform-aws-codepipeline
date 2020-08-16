@@ -16,12 +16,10 @@ phases:
       - yarn
   build:
     commands:
-      - echo Testing...
-      - yarn test
       - echo Building...
       - yarn build
 artifacts:
   files:
     - "**/*"
   discard-paths: no
-  base-directory: dist
+  base-directory: build
