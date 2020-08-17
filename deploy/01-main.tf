@@ -35,10 +35,10 @@ resource "aws_codepipeline" "react-aws-codepipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        Owner      = "MatthewCYLau"
-        Repo       = "react-aws-codepipeline"
+        Owner      = var.github_username
+        Repo       = var.github_project_name
         Branch     = "master"
-        OAuthToken = "${var.github_token}"
+        OAuthToken = var.github_token
       }
     }
   }

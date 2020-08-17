@@ -10,6 +10,7 @@ Make sure you have installed [Terraform](https://learn.hashicorp.com/tutorials/t
 terraform -help # prints Terraform options
 which aws # prints /usr/local/bin/aws
 aws --version # prints aws-cli/2.0.36 Python/3.7.4 Darwin/18.7.0 botocore/2.0.0
+aws configure # configure your AWS CLI profile
 ```
 
 ## Contributing
