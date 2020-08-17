@@ -17,9 +17,9 @@ aws configure # configure your AWS CLI profile
 
 Create a Github project, and generate a personal access token (see doc [here](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token))
 
-Populate `deploy/02-variables.tf`:
+Populate `deploy/02-variables.tf`
 
-```json
+```bash
 variable "github_token" {}
 
 variable "github_username" {
