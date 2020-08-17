@@ -2,6 +2,8 @@
 
 A reference project to deploy a React app onto AWS CodePipeline with Terraform
 
+App URL [here](https://matlau-aws-react-codepipeline-bucket.s3.amazonaws.com/index.html)
+
 ## Pre-requisite
 
 Make sure you have installed [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli), [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html#cliv2-mac-prereq), and configured a `default` AWS CLI profile (see doc [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-profiles))
