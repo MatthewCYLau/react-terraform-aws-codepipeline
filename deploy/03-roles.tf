@@ -83,7 +83,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         {
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::matlau-aws-react-codepipeline-bucket/*"
+                "arn:aws:s3:::${var.bucket_name}/*"
             ],
             "Action": [
                 "s3:PutObject",
