@@ -6,7 +6,7 @@
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::matlau-react-aws-codepipeline2/*"
+      "Resource": "arn:aws:s3:::matlau-aws-react-codepipeline-bucket/*"
     }
   ]
 }

@@ -2,22 +2,23 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_s3_bucket" "matlau-react-aws-codepipeline2" {
-  bucket = "matlau-react-aws-codepipeline2"
-  acl    = "public-read"
-  policy = file("policy.json")
+resource "aws_s3_bucket" "react-aws-codepipeline-s3-bucket" {
+  bucket        = var.bucket_name
+  acl           = "public-read"
+  policy        = file("bucket-policy.json")
+  force_destroy = true
 
   website {
     index_document = "index.html"
   }
 }
 
-resource "aws_codepipeline" "react-aws-codepipeline2" {
+resource "aws_codepipeline" "react-aws-codepipeline" {
   name     = "react-aws-codepipeline2"
   role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
-    location = aws_s3_bucket.matlau-react-aws-codepipeline2.bucket
+    location = aws_s3_bucket.react-aws-codepipeline-s3-bucket.bucket
     type     = "S3"
 
   }
@@ -55,7 +56,7 @@ resource "aws_codepipeline" "react-aws-codepipeline2" {
       version          = "1"
 
       configuration = {
-        ProjectName = "test"
+        ProjectName = "react-aws-codebuild"
       }
     }
   }
@@ -67,72 +68,36 @@ resource "aws_codepipeline" "react-aws-codepipeline2" {
       name            = "Deploy"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "CloudFormation"
+      provider        = "S3"
       input_artifacts = ["build_output"]
       version         = "1"
 
       configuration = {
-        ActionMode     = "REPLACE_ON_FAILURE"
-        Capabilities   = "CAPABILITY_AUTO_EXPAND,CAPABILITY_IAM"
-        OutputFileName = "CreateStackOutput.json"
-        StackName      = "MyStack"
-        TemplatePath   = "build_output::sam-templated.yaml"
+        BucketName = aws_s3_bucket.react-aws-codepipeline-s3-bucket.bucket
+        Extract    = "true"
       }
     }
   }
 }
 
+resource "aws_codebuild_project" "react-aws-codebuild" {
+  name          = "react-aws-codebuild"
+  description   = "react-aws-codebuild"
+  build_timeout = "5"
+  service_role  = aws_iam_role.codebuild_role.arn
 
-resource "aws_iam_role" "codepipeline_role" {
-  name = "test-role"
+  artifacts {
+    type = "CODEPIPELINE"
+  }
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "codepipeline.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/standard:4.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+  }
 
-}
-
-resource "aws_iam_role_policy" "codepipeline_policy" {
-  name = "codepipeline_policy"
-  role = aws_iam_role.codepipeline_role.id
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect":"Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:GetBucketVersioning",
-        "s3:PutObject"
-      ],
-      "Resource": [
-        "${aws_s3_bucket.matlau-react-aws-codepipeline2.arn}",
-        "${aws_s3_bucket.matlau-react-aws-codepipeline2.arn}/*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "codebuild:BatchGetBuilds",
-        "codebuild:StartBuild"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  source {
+    type = "CODEPIPELINE"
+  }
 }
