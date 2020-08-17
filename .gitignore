@@ -22,3 +22,11 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+### Terraform ###
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
