@@ -46,7 +46,7 @@ terraform apply # deploys AWS stack
 terraform destroy # destroys AWS stack
 ```
 
-When prompted `github_token`, provide the value and hit Return
+When prompted for `github_token`, provide the value and hit Return
 
 ## Contributing
 
