@@ -5,7 +5,7 @@ variable "github_username" {
 }
 
 variable "github_project_name" {
-  default = "react-aws-codepipeline"
+  default = "react-terraform-aws-codepipeline"
 }
 
 variable "bucket_name" {

@@ -1,4 +1,4 @@
-# React App Terraform AWS CodePipeline Boilerplate
+# React Terraform AWS CodePipeline Boilerplate
 
 A reference project to deploy a React app onto AWS CodePipeline with Terraform
 
